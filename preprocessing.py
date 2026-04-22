@@ -59,7 +59,7 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
         featured_df["BalanceSegment"] = np.select(
             [balance == 0, (balance > 0) & (balance < 50000), balance >= 50000],
             ["Zero", "Low", "High"],
-            default=np.nan,
+            default=Unknown,
         )
     if {"Balance", "IsActiveMember"}.issubset(featured_df.columns):
         featured_df["Risk"] = np.where(
