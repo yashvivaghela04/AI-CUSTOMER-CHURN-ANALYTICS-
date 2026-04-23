@@ -16,13 +16,10 @@ from kpi import (
 )
 from preprocessing import preprocess_data
 
-
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=0)
 def _get_processed_data() -> pd.DataFrame:
-    """Load, validate, and preprocess data with caching."""
     raw_df = load_and_validate_data()
     return preprocess_data(raw_df)
-
 
 def _format_metric(value: float) -> str:
     """Format KPI values for display."""
@@ -641,6 +638,10 @@ def main() -> None:
     st.title("📊 Interactive Customer Segmentation & Churn Analytics Dashboard")
 
     processed_df = _get_processed_data()
+
+    # 👇 ADD THIS LINE
+    st.write("DEBUG - Columns:", processed_df.columns)
+
     filtered_df = _apply_sidebar_filters(processed_df)
     _render_filter_feedback(processed_df, filtered_df)
 
