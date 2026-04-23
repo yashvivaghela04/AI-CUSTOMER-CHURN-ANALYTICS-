@@ -16,10 +16,13 @@ from kpi import (
 )
 from preprocessing import preprocess_data
 
-@st.cache_data(show_spinner=False, ttl=0)
+
+@st.cache_data(show_spinner=False)
 def _get_processed_data() -> pd.DataFrame:
+    """Load, validate, and preprocess data with caching."""
     raw_df = load_and_validate_data()
     return preprocess_data(raw_df)
+
 
 def _format_metric(value: float) -> str:
     """Format KPI values for display."""
@@ -408,22 +411,11 @@ def _render_visual_builder_tab(filtered_df: pd.DataFrame) -> None:
         "</div>",
         unsafe_allow_html=True,
     )
-    exclude_cols = ["CustomerId", "Surname", "Exited"]
 
     categorical_cols = [
-        col for col in processed_df.columns
-        if col not in exclude_cols and (
-            processed_df[col].dtype == "object"
-            or "Group" in col
-            or "Segment" in col
-            or "Band" in col
-        )
+        c for c in filtered_df.columns if filtered_df[c].dtype == "object" or "Group" in c or "Band" in c
     ]
-
-    numeric_cols = [
-        col for col in processed_df.columns
-        if col not in exclude_cols and processed_df[col].dtype != "object"
-    ]
+    numeric_cols = filtered_df.select_dtypes(include="number").columns.tolist()
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
@@ -649,10 +641,6 @@ def main() -> None:
     st.title("📊 Interactive Customer Segmentation & Churn Analytics Dashboard")
 
     processed_df = _get_processed_data()
-
-    # 👇 ADD THIS LINE
-    st.write("DEBUG - Columns:", processed_df.columns)
-
     filtered_df = _apply_sidebar_filters(processed_df)
     _render_filter_feedback(processed_df, filtered_df)
 
