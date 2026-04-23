@@ -434,7 +434,9 @@ def _render_visual_builder_tab(filtered_df: pd.DataFrame) -> None:
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        x_axis = st.selectbox("X-axis *", options=categorical_cols, key="vb_x")
+        x_options = ["None"] + categorical_cols
+        x_choice = st.selectbox("X-axis", options=x_options, key="vb_x")
+        x_axis = None if x_choice == "None" else x_choice
     with c2:
         y_options = ["(auto: count)"] + numeric_cols
         y_choice = st.selectbox("Y-axis (optional)", options=y_options, key="vb_y")
@@ -451,6 +453,10 @@ def _render_visual_builder_tab(filtered_df: pd.DataFrame) -> None:
         options=["Bar", "Grouped Bar", "Pie", "Line", "Scatter", "Box Plot", "Histogram"],
         key="vb_chart",
     )
+
+    if x_axis is None:
+        st.info("Select an X-axis column to generate a chart.")
+        return
 
     chart_df, y_label = _prepare_aggregated_data(filtered_df, x_axis, y_axis, color_axis, agg)
     if chart_df.empty:
@@ -492,7 +498,9 @@ def _render_advanced_analysis_tab(filtered_df: pd.DataFrame) -> None:
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        x_axis = st.selectbox("X-axis", options=categorical_cols, key="adv_x")
+        x_options = ["None"] + categorical_cols
+        x_choice = st.selectbox("X-axis", options=x_options, key="adv_x")
+        x_axis = None if x_choice == "None" else x_choice
     with c2:
         color_axis = st.selectbox("Group/Color", options=["None"] + categorical_cols, key="adv_color")
     with c3:
@@ -506,6 +514,11 @@ def _render_advanced_analysis_tab(filtered_df: pd.DataFrame) -> None:
 
     color_col = None if color_axis == "None" else color_axis
     facet_col = None if facet_axis == "None" else facet_axis
+
+    if x_axis is None:
+        st.info("Select an X-axis column to generate a chart.")
+        return
+
     if color_col == x_axis:
         color_col = None
     if facet_col in {x_axis, color_col}:
