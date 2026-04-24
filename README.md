@@ -82,5 +82,7 @@ Story / Summary / Recommendation
 B.Tech – Artificial Intelligence & Data Science
 
 📧 Email: [yashvi.cv@gmail.com]
+
 🔗 LinkedIn: https://linkedin.com/in/yashvi-vaghela-639374307
+
 🔗 GitHub: https://github.com/yashvivaghela04
