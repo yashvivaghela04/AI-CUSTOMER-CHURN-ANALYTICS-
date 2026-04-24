@@ -58,21 +58,19 @@ streamlit run app.py
 
 ---
 
-
-## 📸 Screenshots
 ## 📸 Screenshots
 
 Overview  
 ![Overview](images/overview.png)
 
 Overview 2  
-![Overview 2](images/overview 2.png)
+![Overview 2](images/overview_2.png)
 
 Visualization Builder  
-![Visualization Builder](images/visualization builder.png)
+![Visualization Builder](images/visualization_builder.png)
 
 Advanced Analysis  
-![Advanced Analysis](images/Advanced analysis.png)
+![Advanced Analysis](images/advanced_analysis.png)
 
 Story / Summary / Recommendation  
 ![Story](images/story-summary-reccomendation.png)
